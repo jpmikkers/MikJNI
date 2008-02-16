@@ -1,7 +1,0 @@
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\bin\Debug\MikJNITest.exe
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\bin\Debug\MikJNITest.pdb
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\bin\Debug\MikJNI.dll
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\bin\Debug\MikJNI.pdb
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\obj\Debug\MikJNITest.exe
-C:\Users\mikmak\Documents\Visual Studio 2008\Projects\MikJNI\MikJNITest\obj\Debug\MikJNITest.pdb
