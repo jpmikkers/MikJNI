@@ -192,10 +192,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\JNIDNET.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\JNIEnv.cpp"
 				>
 			</File>
@@ -248,10 +244,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

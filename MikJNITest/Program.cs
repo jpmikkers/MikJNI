@@ -14,7 +14,7 @@ namespace MikJNITest
             RawJavaVM vm;
             RawJNINativeInterface env;
 
-            if( RawJavaVM.CreateJavaVM( out vm, out env ) == RawJNIResultCodes.OK )
+            if( RawJavaVM.CreateJavaVM( out vm, out env, new RawJavaVMInitArgs() ) == RawJNIResultCodes.OK )
             {
                 RawJavaVMAttachArgs vmargs = new RawJavaVMAttachArgs();
                 vmargs.group = IntPtr.Zero;

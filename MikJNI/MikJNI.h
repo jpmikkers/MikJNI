@@ -1,4 +1,3 @@
-// JNIDNET.h
 #pragma once
 
 #pragma unmanaged
@@ -31,16 +30,13 @@ public:
 	static const int ABORT        = JNI_ABORT;
 };
 
-
-public ref class RawJNIVersion 
+public enum class RawJNIVersion
 {
-public:
-	static const int VERSION_1_1 = JNI_VERSION_1_1;
-	static const int VERSION_1_2 = JNI_VERSION_1_2;
-	static const int VERSION_1_4 = JNI_VERSION_1_4;
-	static const int VERSION_1_6 = JNI_VERSION_1_6;
+	VERSION_1_1 = JNI_VERSION_1_1,
+	VERSION_1_2 = JNI_VERSION_1_2,
+	VERSION_1_4 = JNI_VERSION_1_4,
+	VERSION_1_6 = JNI_VERSION_1_6
 };
-
 
 #define PWrap(wrapname,origname)	\
 public value class wrapname			\
@@ -144,7 +140,27 @@ internal:
 typedef IList<PJValue>^ JValueArgs;
 value class RawJavaVM;
 
+public ref class RawJavaVMOption 
+{
+public:
+	String ^optionString;
+	IntPtr extraInfo;
+};
 
+public ref class RawJavaVMInitArgs
+{
+public:
+	RawJNIVersion version;
+	List<RawJavaVMOption ^> ^options;
+	bool ignoreUnrecognized;
+
+	RawJavaVMInitArgs::RawJavaVMInitArgs()
+	{
+		this->version = RawJNIVersion::VERSION_1_6;
+		this->options = gcnew List<RawJavaVMOption ^>(0);
+		this->ignoreUnrecognized = true;
+	}
+};
 
 public value class RawJNINativeInterface{
 
@@ -335,9 +351,9 @@ public:
 public ref class RawJavaVMAttachArgs 
 {
 	public:
-    jint version;  /* must be at least JNI_VERSION_1_2 */
-    String ^name;    /* the name of the thread as a modified UTF-8 string, or NULL */
-    Rawjobject group; /* global ref of a ThreadGroup object, or NULL */
+    RawJNIVersion version;		/* must be at least JNI_VERSION_1_2 */
+    String ^name;				/* the name of the thread as a modified UTF-8 string, or NULL */
+    Rawjobject group;			/* global ref of a ThreadGroup object, or NULL */
 };
 
 public value class RawJavaVM{
@@ -355,11 +371,11 @@ public:
 	bool IsNull();
 	static jint CreateJavaVM( 
 		[Runtime::InteropServices::Out] RawJavaVM %jvm,
-		[Runtime::InteropServices::Out] RawJNINativeInterface %env/*, void **penv, void *args */);
+		[Runtime::InteropServices::Out] RawJNINativeInterface %env, RawJavaVMInitArgs ^args );
 	jint DestroyJavaVM();
 	jint AttachCurrentThread( [Runtime::InteropServices::Out] RawJNINativeInterface %env, RawJavaVMAttachArgs ^args );
     jint DetachCurrentThread();
-    jint GetEnv([Runtime::InteropServices::Out] RawJNINativeInterface %env, jint version);
+    jint GetEnv([Runtime::InteropServices::Out] RawJNINativeInterface %env, RawJNIVersion version);
     jint AttachCurrentThreadAsDaemon([Runtime::InteropServices::Out] RawJNINativeInterface %env);
 };
 

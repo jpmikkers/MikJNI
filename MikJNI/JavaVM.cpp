@@ -12,6 +12,16 @@ using namespace System;
 using namespace System::Text;
 using namespace System::Runtime::InteropServices;
 
+// the following two structs are provided to prevent linker warnings. jni.h makes a forward declaration for them,
+// but doesn't actually define them.
+struct _jfieldID
+{
+};
+
+struct _jmethodID
+{
+};
+
 namespace MikJNI
 {
 	namespace Raw
@@ -29,27 +39,39 @@ bool RawJavaVM::IsNull()
 
 jint RawJavaVM::CreateJavaVM( 
 	[Runtime::InteropServices::Out] RawJavaVM %jvm,
-	[Runtime::InteropServices::Out] RawJNINativeInterface %env/*, void **penv, void *args */)
+	[Runtime::InteropServices::Out] RawJNINativeInterface %env,
+	RawJavaVMInitArgs ^args )
 {
 	JavaVM *pjvm = NULL;
-	JNIEnv *penv = NULL;       /* pointer to native method interface */
+	JNIEnv *penv = NULL;
 
-	JavaVMInitArgs vm_args; /* JDK/JRE 6 VM initialization arguments */
-	JavaVMOption* options = new JavaVMOption[1];
-	options[0].optionString = "-Djava.class.path=/usr/lib/java";
-	options[0].extraInfo = NULL;
+	// use default parametes if args is null
+	if( args == nullptr ) args = gcnew RawJavaVMInitArgs();
 
-	vm_args.version = JNI_VERSION_1_6;
-	vm_args.nOptions = 1;
-	vm_args.options = options;
+	JavaVMInitArgs vm_args;
+	vm_args.version = (jint)args->version;
+	vm_args.nOptions = args->options->Count;
+	vm_args.options = new JavaVMOption[args->options->Count];
 	vm_args.ignoreUnrecognized = false;
-	/* load and initialize a Java VM, return a JNI interface
-	 * pointer in env */
-	jint result = JNI_CreateJavaVM(&pjvm, (void **)&penv, &vm_args);
 
+	for(int t=0;t<args->options->Count;t++)
+	{
+		RawJavaVMOption ^item = args->options->default[t];
+		vm_args.options[t].optionString = (char*)Marshal::StringToHGlobalAnsi(item->optionString).ToPointer();
+		vm_args.options[t].extraInfo = item->extraInfo.ToPointer();
+	}
+
+	// load and initialize a Java VM, return a JNI interface pointer in env
+	jint result = JNI_CreateJavaVM(&pjvm, (void **)&penv, &vm_args);
 	jvm = RawJavaVM( IntPtr(pjvm) );
 	env = RawJNINativeInterface( IntPtr(penv) );
-	delete[] options;
+
+	// free the option strings and array that we allocated above
+	for(int t=0;t<args->options->Count;t++)
+	{
+		Marshal::FreeHGlobal(IntPtr(vm_args.options[t].optionString));
+	}
+	delete[] vm_args.options;
 
 	return result;
 }
@@ -74,7 +96,7 @@ jint RawJavaVM::AttachCurrentThread( [Runtime::InteropServices::Out] RawJNINativ
 		StringToModifiedUTF8Adapter name(args->name);
 		a.group = args->group;
 		a.name = (char *)(name.operator const char *());
-		a.version = args->version;
+		a.version = (jint)args->version;
 		result = GetJVM()->AttachCurrentThread( &envptr, (void *)&a );
 	}
 
@@ -87,10 +109,10 @@ jint RawJavaVM::DetachCurrentThread()
 	return GetJVM()->DetachCurrentThread();
 }
 
-jint RawJavaVM::GetEnv([Runtime::InteropServices::Out] RawJNINativeInterface %env, jint version) 
+jint RawJavaVM::GetEnv([Runtime::InteropServices::Out] RawJNINativeInterface %env, RawJNIVersion version) 
 {
 	void *envptr = NULL;
-	int result = GetJVM()->GetEnv( &envptr, version );
+	int result = GetJVM()->GetEnv( &envptr, (jint)version );
 	env = RawJNINativeInterface( IntPtr( envptr ) );
 	return result;
 }
