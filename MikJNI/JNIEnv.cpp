@@ -1,4 +1,3 @@
-// JNIDotNet.cpp : main project file.
 #pragma unmanaged
 #include <string>
 #include <memory>
@@ -6,7 +5,11 @@
 #include "jni.h"
 
 #pragma managed
-#include "MikJNI.h"
+#include "JNIEnv.h"
+#include "JavaVM.h"
+#include "StringToModifiedUTF8Adapter.h"
+#include "StringToUnicodeAdapter.h"
+#include "JValueArrayAdapter.h"
 
 using namespace System;
 using namespace System::Text;
@@ -154,9 +157,9 @@ Rawjobject  RawJNINativeInterface::AllocObject(Rawjclass clazz)
 	return GetNativeEnv()->AllocObject( clazz );
 }
 
-Rawjobject  RawJNINativeInterface::NewObjectA(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+Rawjobject  RawJNINativeInterface::NewObjectA(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->NewObjectA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->NewObjectA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
 Rawjclass  RawJNINativeInterface::GetObjectClass(Rawjobject obj)
@@ -174,104 +177,104 @@ RawjmethodID  RawJNINativeInterface::GetMethodID(Rawjclass clazz, String ^ name,
 	return GetNativeEnv()->GetMethodID( clazz, StringToModifiedUTF8Adapter(name), StringToModifiedUTF8Adapter(sig) );
 }
 
-Rawjobject  RawJNINativeInterface::CallObjectMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+Rawjobject  RawJNINativeInterface::CallObjectMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallObjectMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallObjectMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-bool  RawJNINativeInterface::CallBooleanMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+bool  RawJNINativeInterface::CallBooleanMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallBooleanMethodA( obj, methodID, JValueAdapter(args) ) ? true : false;
+	return GetNativeEnv()->CallBooleanMethodA( obj, methodID, JValueArrayAdapter(args) ) ? true : false;
 }
 
-jbyte  RawJNINativeInterface::CallByteMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jbyte  RawJNINativeInterface::CallByteMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallByteMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallByteMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jchar  RawJNINativeInterface::CallCharMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jchar  RawJNINativeInterface::CallCharMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallCharMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallCharMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jshort  RawJNINativeInterface::CallShortMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jshort  RawJNINativeInterface::CallShortMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallShortMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallShortMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jint  RawJNINativeInterface::CallIntMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jint  RawJNINativeInterface::CallIntMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallIntMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallIntMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jlong  RawJNINativeInterface::CallLongMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jlong  RawJNINativeInterface::CallLongMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallLongMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallLongMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jfloat  RawJNINativeInterface::CallFloatMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jfloat  RawJNINativeInterface::CallFloatMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallFloatMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallFloatMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-jdouble  RawJNINativeInterface::CallDoubleMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+jdouble  RawJNINativeInterface::CallDoubleMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallDoubleMethodA( obj, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallDoubleMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-void  RawJNINativeInterface::CallVoidMethod(Rawjobject obj, RawjmethodID methodID, JValueArgs args)
+void  RawJNINativeInterface::CallVoidMethod(Rawjobject obj, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	GetNativeEnv()->CallVoidMethodA( obj, methodID, JValueAdapter(args) );
+	GetNativeEnv()->CallVoidMethodA( obj, methodID, JValueArrayAdapter(args) );
 }
 
-Rawjobject RawJNINativeInterface::CallNonvirtualObjectMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+Rawjobject RawJNINativeInterface::CallNonvirtualObjectMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualObjectMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualObjectMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-bool  RawJNINativeInterface::CallNonvirtualBooleanMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+bool  RawJNINativeInterface::CallNonvirtualBooleanMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualBooleanMethodA( obj, clazz, methodID, JValueAdapter(args) ) ? true : false;
+	return GetNativeEnv()->CallNonvirtualBooleanMethodA( obj, clazz, methodID, JValueArrayAdapter(args) ) ? true : false;
 }
 
-jbyte  RawJNINativeInterface::CallNonvirtualByteMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jbyte  RawJNINativeInterface::CallNonvirtualByteMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualByteMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualByteMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jchar  RawJNINativeInterface::CallNonvirtualCharMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jchar  RawJNINativeInterface::CallNonvirtualCharMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualCharMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualCharMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jshort  RawJNINativeInterface::CallNonvirtualShortMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jshort  RawJNINativeInterface::CallNonvirtualShortMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualShortMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualShortMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jint  RawJNINativeInterface::CallNonvirtualIntMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jint  RawJNINativeInterface::CallNonvirtualIntMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualIntMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualIntMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jlong  RawJNINativeInterface::CallNonvirtualLongMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jlong  RawJNINativeInterface::CallNonvirtualLongMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualLongMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualLongMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jfloat  RawJNINativeInterface::CallNonvirtualFloatMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jfloat  RawJNINativeInterface::CallNonvirtualFloatMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualFloatMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualFloatMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jdouble  RawJNINativeInterface::CallNonvirtualDoubleMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jdouble  RawJNINativeInterface::CallNonvirtualDoubleMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallNonvirtualDoubleMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallNonvirtualDoubleMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
-void  RawJNINativeInterface::CallNonvirtualVoidMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+void  RawJNINativeInterface::CallNonvirtualVoidMethod(Rawjobject obj, Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	GetNativeEnv()->CallNonvirtualVoidMethodA( obj, clazz, methodID, JValueAdapter(args) );
+	GetNativeEnv()->CallNonvirtualVoidMethodA( obj, clazz, methodID, JValueArrayAdapter(args) );
 }
 
 RawjfieldID RawJNINativeInterface::GetFieldID(Rawjclass clazz, String ^ name, String ^ sig)
@@ -374,54 +377,54 @@ RawjmethodID  RawJNINativeInterface::GetStaticMethodID(Rawjclass clazz, String ^
 	return GetNativeEnv()->GetStaticMethodID( clazz, StringToModifiedUTF8Adapter(name), StringToModifiedUTF8Adapter(sig) );
 }
 
-Rawjobject  RawJNINativeInterface::CallStaticObjectMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+Rawjobject  RawJNINativeInterface::CallStaticObjectMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticObjectMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticObjectMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-bool  RawJNINativeInterface::CallStaticBooleanMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+bool  RawJNINativeInterface::CallStaticBooleanMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticBooleanMethodA( clazz, methodID, JValueAdapter(args) ) ? true : false;
+	return GetNativeEnv()->CallStaticBooleanMethodA( clazz, methodID, JValueArrayAdapter(args) ) ? true : false;
 }
 
-jbyte  RawJNINativeInterface::CallStaticByteMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jbyte  RawJNINativeInterface::CallStaticByteMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticByteMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticByteMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jchar  RawJNINativeInterface::CallStaticCharMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jchar  RawJNINativeInterface::CallStaticCharMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticCharMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticCharMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jshort  RawJNINativeInterface::CallStaticShortMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jshort  RawJNINativeInterface::CallStaticShortMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticShortMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticShortMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jint  RawJNINativeInterface::CallStaticIntMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jint  RawJNINativeInterface::CallStaticIntMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticIntMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticIntMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jlong  RawJNINativeInterface::CallStaticLongMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jlong  RawJNINativeInterface::CallStaticLongMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticLongMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticLongMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jfloat  RawJNINativeInterface::CallStaticFloatMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jfloat  RawJNINativeInterface::CallStaticFloatMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticFloatMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticFloatMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-jdouble  RawJNINativeInterface::CallStaticDoubleMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+jdouble  RawJNINativeInterface::CallStaticDoubleMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	return GetNativeEnv()->CallStaticDoubleMethodA( clazz, methodID, JValueAdapter(args) );
+	return GetNativeEnv()->CallStaticDoubleMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
-void  RawJNINativeInterface::CallStaticVoidMethod(Rawjclass clazz, RawjmethodID methodID, JValueArgs args)
+void  RawJNINativeInterface::CallStaticVoidMethod(Rawjclass clazz, RawjmethodID methodID, IList<PJValue>^ args)
 {
-	GetNativeEnv()->CallStaticVoidMethodA( clazz, methodID, JValueAdapter(args) );
+	GetNativeEnv()->CallStaticVoidMethodA( clazz, methodID, JValueArrayAdapter(args) );
 }
 
 RawjfieldID RawJNINativeInterface::GetStaticFieldID(Rawjclass clazz, String ^ name, String ^ sig)

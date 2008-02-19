@@ -218,6 +218,18 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\JavaVM.h"
+				>
+			</File>
+			<File
+				RelativePath=".\JNIEnv.h"
+				>
+			</File>
+			<File
+				RelativePath=".\JValueArrayAdapter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MikJNI.h"
 				>
 			</File>
@@ -226,7 +238,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Stdafx.h"
+				RelativePath=".\StringConverter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StringToModifiedUTF8Adapter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StringToUnicodeAdapter.h"
 				>
 			</File>
 		</Filter>

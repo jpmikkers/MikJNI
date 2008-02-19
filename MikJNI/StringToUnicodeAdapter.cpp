@@ -1,12 +1,10 @@
-// JNIDotNet.cpp : main project file.
 #pragma unmanaged
 #include <string>
 #include <memory>
-#include <vector>
-#include "jni.h"
 
 #pragma managed
-#include "MikJNI.h"
+#include "StringToUnicodeAdapter.h"
+#include "StringConverter.h"
 
 using namespace System;
 using namespace System::Text;
@@ -19,10 +17,11 @@ StringToUnicodeAdapter::StringToUnicodeAdapter(System::String ^s)
 {
 	if(s!=nullptr)
 	{
+		// this depends on sizeof(Char) == sizeof(unsigned short) == sizeof(jchar)
 		array<Char> ^t=StringConverter::ConvertStringToUnicodeArray(s);
 		pin_ptr<Char> pin = &t[0];
-		buf = new jchar[t->Length];
-		memcpy(buf,pin,t->Length * sizeof(jchar));
+		buf = new unsigned short[t->Length];
+		memcpy(buf,pin,t->Length * sizeof(unsigned short));
 	}
 	else
 	{
@@ -35,7 +34,7 @@ StringToUnicodeAdapter::~StringToUnicodeAdapter()
 	delete[] buf;
 }
 
-StringToUnicodeAdapter::operator const jchar *()
+StringToUnicodeAdapter::operator const unsigned short *()
 {
 	return buf;
 }

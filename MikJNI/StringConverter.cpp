@@ -1,16 +1,9 @@
-// JNIDotNet.cpp : main project file.
-#pragma unmanaged
-#include <string>
-#include <memory>
-#include <vector>
-#include "jni.h"
-
 #pragma managed
-#include "MikJNI.h"
+#include "StringConverter.h"
 
 using namespace System;
 using namespace System::Text;
-using namespace System::Runtime::InteropServices;
+using namespace System::Collections::Generic;
 
 namespace MikJNI
 {
@@ -27,7 +20,7 @@ namespace MikJNI
 
 array<System::Byte> ^StringConverter::ConvertStringToModifiedUTF8Array(System::String ^s)
 {
-	System::Collections::Generic::List<System::Byte> ^v = gcnew System::Collections::Generic::List<System::Byte>();
+	List<System::Byte> ^v = gcnew List<System::Byte>();
 
 	for each(System::Char c in s)
 	{
@@ -58,7 +51,7 @@ array<System::Byte> ^StringConverter::ConvertStringToModifiedUTF8Array(System::S
 
 array<Char> ^StringConverter::ConvertStringToUnicodeArray(System::String ^s)
 {
-	System::Collections::Generic::List<Char> ^v = gcnew System::Collections::Generic::List<Char>();
+	List<Char> ^v = gcnew List<Char>();
 	for each(Char c in s)
 	{
 		v->Add(c);

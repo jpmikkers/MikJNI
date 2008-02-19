@@ -1,12 +1,10 @@
-// JNIDotNet.cpp : main project file.
 #pragma unmanaged
 #include <string>
 #include <memory>
-#include <vector>
-#include "jni.h"
 
 #pragma managed
-#include "MikJNI.h"
+#include "StringToModifiedUTF8Adapter.h"
+#include "StringConverter.h"
 
 using namespace System;
 using namespace System::Text;

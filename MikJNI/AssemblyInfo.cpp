@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 using namespace System;
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;
@@ -11,11 +9,11 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("JNIDNET")];
+[assembly:AssemblyTitleAttribute("MIKJNI")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("")];
-[assembly:AssemblyProductAttribute("JNIDNET")];
+[assembly:AssemblyProductAttribute("MIKJNI")];
 [assembly:AssemblyCopyrightAttribute("Copyright (c)  2008")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];

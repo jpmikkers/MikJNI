@@ -1,4 +1,3 @@
-// JNIDotNet.cpp : main project file.
 #pragma unmanaged
 #include <string>
 #include <memory>
@@ -7,17 +6,16 @@
 
 #pragma managed
 #include "MikJNI.h"
+#include "JValueArrayAdapter.h"
 
 using namespace System;
-using namespace System::Text;
-using namespace System::Runtime::InteropServices;
 
 namespace MikJNI
 {
 	namespace Raw
 	{
 
-JValueAdapter::JValueAdapter( JValueArgs args )
+JValueArrayAdapter::JValueArrayAdapter( IList<PJValue>^ args )
 {
 	dummy = new jvalue[args->Count];
 	for(int t=0;t<args->Count;t++)
@@ -26,12 +24,12 @@ JValueAdapter::JValueAdapter( JValueArgs args )
 	}
 }
 
-JValueAdapter::~JValueAdapter()
+JValueArrayAdapter::~JValueArrayAdapter()
 {
 	delete[] dummy;
 }
 
-JValueAdapter::operator const jvalue *()
+JValueArrayAdapter::operator const jvalue *()
 {
 	return dummy;
 }
