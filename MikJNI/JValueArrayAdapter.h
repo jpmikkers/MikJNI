@@ -15,16 +15,19 @@ using namespace System::Collections::Generic;
 namespace MikJNI {
 	namespace Raw {
 
-class JValueArrayAdapter
-{
-private:
-	jvalue *dummy;
+		/// <summary>
+		/// Class that simplifies creating a temporary unmanaged jvalue array from a list of (managed) Rawjvalues.
+		/// </summary>
+		class JValueArrayAdapter
+		{
+		private:
+			jvalue *dummy;
 
-public:
-	JValueArrayAdapter( IList<PJValue>^ args );
-	~JValueArrayAdapter();
-	operator const jvalue *();
-};
+		public:
+			JValueArrayAdapter( IList<Rawjvalue>^ args );
+			~JValueArrayAdapter();
+			operator const jvalue *();
+		};
 
 	}	// namespace Raw
 } // namespace MikJNI

@@ -15,24 +15,24 @@ namespace MikJNI
 	namespace Raw
 	{
 
-JValueArrayAdapter::JValueArrayAdapter( IList<PJValue>^ args )
-{
-	dummy = new jvalue[args->Count];
-	for(int t=0;t<args->Count;t++)
-	{
-		dummy[t] = args->default[t];
-	}
-}
+		JValueArrayAdapter::JValueArrayAdapter( IList<Rawjvalue>^ args )
+		{
+			dummy = new jvalue[args->Count];
+			for(int t=0;t<args->Count;t++)
+			{
+				dummy[t] = args->default[t];
+			}
+		}
 
-JValueArrayAdapter::~JValueArrayAdapter()
-{
-	delete[] dummy;
-}
+		JValueArrayAdapter::~JValueArrayAdapter()
+		{
+			delete[] dummy;
+		}
 
-JValueArrayAdapter::operator const jvalue *()
-{
-	return dummy;
-}
+		JValueArrayAdapter::operator const jvalue *()
+		{
+			return dummy;
+		}
 
 	} // namespace Raw
 } // namespace MikJNI
